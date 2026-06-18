@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Booking System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#333;
+    margin-bottom:20px;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#007bff;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.booking-list{
+    margin-top:20px;
+}
+
+.booking-card{
+    background:#eef;
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏨 Room Booking System</h1>
+
+    <input type="text" id="name" placeholder="Guest Name">
+
+    <input type="email" id="email" placeholder="Email">
+
+    <select id="room">
+        <option value="">Select Room</option>
+        <option>Single Room</option>
+        <option>Double Room</option>
+        <option>Deluxe Room</option>
+        <option>Suite Room</option>
+    </select>
+
+    <label>Check-In Date</label>
+    <input type="date" id="checkin">
+
+    <label>Check-Out Date</label>
+    <input type="date" id="checkout">
+
+    <button onclick="bookRoom()">Book Room</button>
+
+    <div class="booking-list">
+        <h2>Bookings</h2>
+        <div id="bookings"></div>
+    </div>
+</div>
+
+<script>
+
+// Simulated backend using localStorage
+
+let bookings = JSON.parse(localStorage.getItem("roomBookings")) || [];
+
+function saveBookings(){
+    localStorage.setItem("roomBookings", JSON.stringify(bookings));
+}
+
+function displayBookings(){
+    let output = "";
+    
+    bookings.forEach((booking,index)=>{
+        output += `
+        <div class="booking-card">
+            <strong>${booking.name}</strong><br>
+            Email: ${booking.email}<br>
+            Room: ${booking.room}<br>
+            Check-In: ${booking.checkin}<br>
+            Check-Out: ${booking.checkout}<br><br>
+
+            <button onclick="deleteBooking(${index})">
+                Cancel Booking
+            </button>
+        </div>`;
+    });
+
+    document.getElementById("bookings").innerHTML = output;
+}
+
+function bookRoom(){
+
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let room = document.getElementById("room").value;
+    let checkin = document.getElementById("checkin").value;
+    let checkout = document.getElementById("checkout").value;
+
+    if(!name || !email || !room || !checkin || !checkout){
+        alert("Please fill all fields");
+        return;
+    }
+
+    let booking = {
+        name,
+        email,
+        room,
+        checkin,
+        checkout
+    };
+
+    bookings.push(booking);
+    saveBookings();
+    displayBookings();
+
+    alert("Room Booked Successfully!");
+
+    document.getElementById("name").value="";
+    document.getElementById("email").value="";
+    document.getElementById("room").value="";
+    document.getElementById("checkin").value="";
+    document.getElementById("checkout").value="";
+}
+
+function deleteBooking(index){
+    bookings.splice(index,1);
+    saveBookings();
+    displayBookings();
+}
+
+displayBookings();
+
+</script>
+
+</body>
+</html>
