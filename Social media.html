@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Social Media Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+        }
+
+        header {
+            background-color: #1877f2;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .post-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+        }
+
+        button {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .post {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Social Media Platform</h1>
+</header>
+
+<div class="container">
+
+    <div class="post-box">
+        <h3>Create Post</h3>
+        <textarea id="postText" placeholder="What's on your mind?"></textarea>
+        <br><br>
+        <button onclick="createPost()">Post</button>
+    </div>
+
+    <div id="posts"></div>
+
+</div>
+
+<script>
+function createPost() {
+    let text = document.getElementById("postText").value;
+
+    if(text.trim() === "") {
+        alert("Please enter a post!");
+        return;
+    }
+
+    let postDiv = document.createElement("div");
+    postDiv.className = "post";
+    postDiv.innerHTML = `
+        <p>${text}</p>
+        <button onclick="likePost(this)">Like</button>
+        <span> 0 Likes</span>
+    `;
+
+    document.getElementById("posts").prepend(postDiv);
+    document.getElementById("postText").value = "";
+}
+
+function likePost(btn) {
+    let span = btn.nextElementSibling;
+    let count = parseInt(span.innerText);
+    span.innerText = (count + 1) + " Likes";
+}
+</script>
+
+</body>
+</html>
